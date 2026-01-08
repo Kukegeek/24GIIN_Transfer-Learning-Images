@@ -88,15 +88,77 @@ python evaluate_models.py
 Con esto puedes evaluar uno o varios modelos desde la misma sección sin duplicar instrucciones.
 
 ---
+---
 
 English
 
+# Food Image Classification (Transfer Learning)
+
+This project uses Deep Learning models (exported from Teachable Machine) to classify food and related objects.
+
+## Project Structure (updated)
+
+- `training/images/`: Original images organized by category (these were used to train the models).
+  - `training/images/01_soup`
+  - `training/images/02_main`
+  - `training/images/03_salad`
+  - `training/images/04_dessert`
+  - `training/images/05_nofood`
+- `training/models/`: Contains folders with models exported from Teachable Machine. Each subfolder includes `keras_model.h5` and `labels.txt`.
+  - Models are organized in folders `model01`, `model02`, `model03`, `model04`, `model05`.
+  - Each folder contains `keras_model.h5` and `labels.txt`.
+- `test/`: Images used for evaluation (file names are used to infer the ground-truth label).
+- `evaluate_models.py`: Script to evaluate models against the images in `test/`.
+- `check_tf.py`: Utility script to verify TensorFlow/Keras installation.
+
+## How to Reproduce Training (Teachable Machine)
+
+1. Go to https://teachablemachine.withgoogle.com/ and create an Image Project.
+2. Create classes and name them: `soup`, `main`, `salad`, `dessert`, `nofood`.
+3. Upload images from `training/images/<class_folder>` to the corresponding class.
+   - For example, upload images from `training/images/01_soup` to the `soup` class.
+4. Train the model in Teachable Machine.
+5. Export the model (TensorFlow -> Keras) and place the extracted content into a folder inside `training/models/`.
+   - Example: `training/models/my_model/keras_model.h5` and `training/models/my_model/labels.txt`.
+
+## Running Evaluation
+
+1. Install dependencies if needed:
+```bash
+pip install tensorflow pillow numpy
+```
+2. Put your test images into `test/`.
+3. Accepted filename formats (used by the script to determine the true label):
+   - Name prefix by class: `salad_01.jpg`, `main_02.png`, etc.
+   - Numeric prefix: `01_...` -> `soup`, `02_...` -> `main`, `03_...` -> `salad`, `04_...` -> `dessert`, `05_...` -> `nofood`.
+     - Example: `03_my_salad.jpg` will be interpreted as `salad`.
+4. Run evaluation:
+```bash
+python evaluate_models.py
+```
+5. `evaluate_models.py` will read the folders listed in the `MODEL_FOLDERS` variable inside `training/models/` (for example `model01`, `model02`, ...) and will print metrics per model.
+
+## Requirements
+- Python 3.x
+- tensorflow / tf-keras
+- pillow
+- numpy
+
+## Notes
+- Make sure each model folder in `training/models/` contains a `keras_model.h5` file.
+- The original training images are kept in `training/images/` for reference and reproducibility.
+
 ## Evaluate one or several custom models
 
-If you want to use your own models, you can simply replace the contents of the existing folders `model01`, `model02`, `model03`, `model04`, `model05` inside `training/models/` with your model files. Each folder should contain:
+You can evaluate one or multiple custom models from a single unified section. Two simple approaches are supported:
 
-- `keras_model.h5`
-- `labels.txt` (one label per line, matching the model output order)
+- Option 1 — Replace the contents of existing folders (recommended):
+  - Replace the files inside `training/models/model01`, `model02`, `model03`, `model04`, `model05` with your model files. Each folder must contain:
+    - `keras_model.h5`
+    - `labels.txt` (one label per line, in the order of the model output)
+
+- Option 2 — Add a new folder and point to it:
+  - Create `training/models/my_model/` and place `keras_model.h5` and `labels.txt` inside.
 
 Then specify which folders to evaluate by editing the `MODEL_FOLDERS` list in `evaluate_models.py`. Examples:
 
@@ -106,6 +168,9 @@ MODEL_FOLDERS = ['model01']
 
 # Evaluate multiple models (model02 and model05)
 MODEL_FOLDERS = ['model02', 'model05']
+
+# Evaluate a newly added folder called my_model
+MODEL_FOLDERS = ['my_model']
 ```
 
 Finally run:
@@ -114,9 +179,10 @@ Finally run:
 python evaluate_models.py
 ```
 
-This way you do not need to create new folders: just replace the files inside `model01..model05` with your model and update `MODEL_FOLDERS`.
+This allows you to evaluate one or several models from the same instructions without duplication.
 
-Notas:
-- Si usas `run_models.py` o la invocación directa, no necesitas tocar `evaluate_models.py`.
-- Asegúrate de que `labels.txt` coincide con el orden de salida del modelo (index 0 = primera etiqueta en `labels.txt`).
+## Additional notes
+- If you use a helper script like `run_models.py` or invoke evaluation directly, you may not need to edit `evaluate_models.py`.
+- Ensure `labels.txt` matches the model output order (index 0 = first label in `labels.txt`).
+
 
