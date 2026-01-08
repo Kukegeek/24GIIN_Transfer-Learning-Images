@@ -99,3 +99,52 @@ python evaluate_models.py --model-path training/models/mi_model/keras_model.h5
     - `--model-path` usará la ruta exacta que pases y mostrará como nombre del modelo la carpeta padre.
 
 Si quieres, implemento la Opción C en `evaluate_models.py` y subo el cambio para que puedas usar los flags `--model-folder` y `--model-path`.
+
+## Evaluar uno o varios modelos propios
+
+Si tienes uno o varios modelos propios (no quieres usar los modelos incluidos en `MODEL_FOLDERS`), sigue estas instrucciones:
+
+- Preparación de tus modelos
+  - Para cada modelo crea una carpeta en `training/models/` por ejemplo `training/models/mi_model1/`, `training/models/mi_model2/`.
+  - En cada carpeta coloca `keras_model.h5` y `labels.txt` (los labels deben listarse en el mismo orden que las salidas del modelo).
+
+- Evaluar un solo modelo
+  - Usa cualquiera de las opciones A/B/C descritas arriba (A: editar `MODEL_FOLDERS`, B: invocación directa, C: usar flags CLI si los habilitas).
+
+- Evaluar varios modelos propios (sin editar `evaluate_models.py` cada vez)
+  - Opción 1 — Crear un pequeño script `run_models.py` (recomendado):
+
+```python
+from evaluate_models import evaluate_model
+
+models = [
+    'training/models/mi_model1/keras_model.h5',
+    'training/models/mi_model2/keras_model.h5'
+]
+
+for path in models:
+    name = path.split('/')[-2].split('\\')[-1]
+    evaluate_model(path, name)
+
+```
+
+  - Guarda como `run_models.py` en la raíz del proyecto y ejecútalo:
+```bash
+python run_models.py
+```
+
+  - Opción 2 — Ejecutar desde la línea de comandos (ejemplo rápido):
+```bash
+python - <<'PY'
+from evaluate_models import evaluate_model
+for p in ['training/models/mi_model1/keras_model.h5','training/models/mi_model2/keras_model.h5']:
+    evaluate_model(p, p.split('/')[-2])
+PY
+```
+
+  - Opción 3 — Editar `MODEL_FOLDERS` temporalmente: reemplaza `MODEL_FOLDERS` por la lista de carpetas que quieras evaluar.
+
+Notas:
+- Si usas `run_models.py` o la invocación directa, no necesitas tocar `evaluate_models.py`.
+- Asegúrate de que `labels.txt` coincide con el orden de salida del modelo (index 0 = primera etiqueta en `labels.txt`).
+
