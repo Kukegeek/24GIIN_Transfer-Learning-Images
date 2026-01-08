@@ -35,7 +35,7 @@ MODEL_FOLDERS = [
 ]
 
 CLASS_MAP = {
-    'soap': 0,
+    'soup': 0,
     'main': 1,
     'salad': 2,
     'dessert': 3,
@@ -43,7 +43,7 @@ CLASS_MAP = {
 }
 
 NUMBER_MAP = {
-    '01': 'soap',
+    '01': 'soup',
     '02': 'main',
     '03': 'salad',
     '04': 'dessert',

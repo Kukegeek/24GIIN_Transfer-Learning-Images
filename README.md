@@ -5,7 +5,7 @@ Este proyecto utiliza modelos de Deep Learning (entrenados con Teachable Machine
 ## Estructura del Proyecto (actualizada)
 
 - `training/images/`: Imágenes originales organizadas por categoría (estas son las imágenes que se usaron para entrenar los modelos).
-  - `training/images/01_soap`
+  - `training/images/01_soup`
   - `training/images/02_main`
   - `training/images/03_salad`
   - `training/images/04_dessert`
@@ -19,9 +19,9 @@ Este proyecto utiliza modelos de Deep Learning (entrenados con Teachable Machine
 ## Cómo reproducir el entrenamiento (Teachable Machine)
 
 1.  Accede a https://teachablemachine.withgoogle.com/ y crea un "Image Project".
-2.  Crea las clases y nómbralas: `soap`, `main`, `salad`, `dessert`, `nofood`.
+2.  Crea las clases y nómbralas: `soup`, `main`, `salad`, `dessert`, `nofood`.
 3.  Sube las imágenes desde `training/images/<carpeta_de_clase>` a la clase correspondiente.
-    - Por ejemplo, para `soap` sube las imágenes de `training/images/01_soap`.
+    - Por ejemplo, para `soup` sube las imágenes de `training/images/01_soup`.
 4.  Entrena el modelo en Teachable Machine.
 5.  Exporta el modelo (TensorFlow -> Keras) y coloca el contenido descomprimido en una carpeta dentro de `training/models/`.
     - Ejemplo: `training/models/mi_modelo/keras_model.h5` y `training/models/mi_modelo/labels.txt`.
@@ -35,7 +35,7 @@ pip install tensorflow pillow numpy
 2.  Coloca las imágenes de prueba en `test/`.
 3.  Nombres de archivo aceptados (para que el script determine la etiqueta verdadera):
    - Prefijo por nombre: `salad_01.jpg`, `main_02.png`, etc.
-   - Prefijo numérico: `01_...` -> `soap`, `02_...` -> `main`, `03_...` -> `salad`, `04_...` -> `dessert`, `05_...` -> `nofood`.
+  - Prefijo numérico: `01_...` -> `soup`, `02_...` -> `main`, `03_...` -> `salad`, `04_...` -> `dessert`, `05_...` -> `nofood`.
      - Ejemplo: `03_mi_ensalada.jpg` será interpretado como `salad`.
 4.  Ejecuta la evaluación:
 ```bash
