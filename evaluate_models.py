@@ -27,11 +27,11 @@ TEST_DIR = 'test'
 # Root folder where models are stored
 TRAINING_DIR = os.path.join('training', 'models')
 MODEL_FOLDERS = [
-    '10_samples_1-10.keras',
-    '10_samples_11-20.keras',
-    '10_samples_21-30.keras',
-    '20_samples_06-25.keras',
-    '30_samples_01-30.keras'
+    'model01',
+    'model02',
+    'model03',
+    'model04',
+    'model05'
 ]
 
 CLASS_MAP = {
