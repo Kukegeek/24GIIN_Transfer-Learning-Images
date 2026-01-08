@@ -52,3 +52,50 @@ python evaluate_models.py
 ## Notas
 - Asegúrate de que cada carpeta de modelo en `training/models/` contenga `keras_model.h5`.
 - Las imágenes de entrenamiento originales se guardan en `training/images/` para referencia y reproducibilidad.
+
+## Evaluar un solo modelo (tu modelo)
+
+Si quieres evaluar únicamente tu modelo (en lugar de los modelos incluidos), tienes estas opciones:
+
+1) Opción A — Rápido, sin cambios de código
+
+  - Crea una carpeta para tu modelo en `training/models/`, por ejemplo `training/models/mi_model/`.
+  - Coloca `keras_model.h5` y `labels.txt` dentro de esa carpeta.
+  - Edita la lista `MODEL_FOLDERS` en `evaluate_models.py` y reemplaza su contenido por:
+
+```python
+MODEL_FOLDERS = ['mi_model']
+```
+
+  - Ejecuta:
+
+```bash
+python evaluate_models.py
+```
+
+2) Opción B — Invocación directa (sin editar el script)
+
+  - Ejecuta la función `evaluate_model` directamente desde la línea de comandos:
+
+```bash
+python -c "from evaluate_models import evaluate_model; evaluate_model('training/models/mi_model/keras_model.h5','mi_model')"
+```
+
+3) Opción C — Recomendado: habilitar CLI (sin editar el archivo cada vez)
+
+  - Añade soporte por argumentos en `evaluate_models.py` para pasar `--model-folder` o `--model-path`.
+  - Ejemplos de uso:
+
+```bash
+# Evaluar por carpeta dentro de training/models
+python evaluate_models.py --model-folder mi_model
+
+# Evaluar por ruta directa al archivo h5
+python evaluate_models.py --model-path training/models/mi_model/keras_model.h5
+```
+
+  - Comportamiento:
+    - `--model-folder` buscará `training/models/<folder>/keras_model.h5`.
+    - `--model-path` usará la ruta exacta que pases y mostrará como nombre del modelo la carpeta padre.
+
+Si quieres, implemento la Opción C en `evaluate_models.py` y subo el cambio para que puedas usar los flags `--model-folder` y `--model-path`.
