@@ -2,7 +2,7 @@
 
 Este proyecto utiliza modelos de Deep Learning (entrenados con Teachable Machine) para clasificar diferentes tipos de comida u objetos relacionados.
 
-## Estructura del Proyecto (actualizada)
+## Estructura del Proyecto
 
 - `training/images/`: Imágenes originales organizadas por categoría (estas son las imágenes que se usaron para entrenar los modelos).
   - `training/images/01_soup`
@@ -96,7 +96,7 @@ English
 
 This project uses Deep Learning models (exported from Teachable Machine) to classify food and related objects.
 
-## Project Structure (updated)
+## Project Structure 
 
 - `training/images/`: Original images organized by category (these were used to train the models).
   - `training/images/01_soup`
