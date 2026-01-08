@@ -24,7 +24,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # Configuration
 TEST_DIR = 'test'
-TRAINING_DIR = 'training'
+# Root folder where models are stored
+TRAINING_DIR = os.path.join('training', 'models')
 MODEL_FOLDERS = [
     '10_samples_1-10.keras',
     '10_samples_11-20.keras',
