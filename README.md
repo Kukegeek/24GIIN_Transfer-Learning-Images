@@ -11,7 +11,8 @@ Este proyecto utiliza modelos de Deep Learning (entrenados con Teachable Machine
   - `training/images/04_dessert`
   - `training/images/05_nofood`
 - `training/models/`: Contiene las carpetas con los modelos exportados desde Teachable Machine. Cada subcarpeta incluye `keras_model.h5` y `labels.txt`.
-  - Ejemplo: `training/models/10_samples_1-10.keras/keras_model.h5`
+  - Ahora los modelos están organizados en carpetas `model01`, `model02`, `model03`, `model04`, `model05`.
+  - Cada carpeta contiene `keras_model.h5` y `labels.txt`.
 - `test/`: Imágenes para evaluación (nombres usados para inferir la etiqueta verdadera).
 - `evaluate_models.py`: Script para evaluar modelos frente a las imágenes en `test/`.
 - `check_tf.py`: Script de utilidad para verificar la instalación de TensorFlow/Keras.
@@ -41,7 +42,7 @@ pip install tensorflow pillow numpy
 ```bash
 python evaluate_models.py
 ```
-5.  `evaluate_models.py` leerá las carpetas listadas en la variable `MODEL_FOLDERS` dentro de `training/models/` y generará métricas por modelo.
+5.  `evaluate_models.py` leerá las carpetas listadas en la variable `MODEL_FOLDERS` dentro de `training/models/` (por ejemplo `model01`, `model02`, ...) y generará métricas por modelo.
 
 ## Requisitos
 - Python 3.x
@@ -76,47 +77,28 @@ Usando esta opción solo se evaluará el modelo que indiques en `MODEL_FOLDERS`.
 
 ## Evaluar uno o varios modelos propios
 
-Si tienes uno o varios modelos propios (no quieres usar los modelos incluidos en `MODEL_FOLDERS`), sigue estas instrucciones:
+Si tienes uno o varios modelos propios (no quieres usar los modelos incluidos en `MODEL_FOLDERS`), la forma más fácil es la siguiente:
 
-- Preparación de tus modelos
-  - Para cada modelo crea una carpeta en `training/models/` por ejemplo `training/models/mi_model1/`, `training/models/mi_model2/`.
-  - En cada carpeta coloca `keras_model.h5` y `labels.txt` (los labels deben listarse en el mismo orden que las salidas del modelo).
+- Preparación rápida de tu(s) modelo(s):
+  - Crea una carpeta dentro de `training/models/` por cada modelo, por ejemplo `training/models/mi_model/`.
+  - Coloca dentro `keras_model.h5` y `labels.txt` (el `labels.txt` debe listar las etiquetas en el mismo orden que la salida del modelo).
 
-- Evaluar un solo modelo
-  - Usa cualquiera de las opciones A/B/C descritas arriba (A: editar `MODEL_FOLDERS`, B: invocación directa, C: usar flags CLI si los habilitas).
-
-- Evaluar varios modelos propios (sin editar `evaluate_models.py` cada vez)
-  - Opción 1 — Crear un pequeño script `run_models.py` (recomendado):
+- Evaluar uno o varios modelos (forma más sencilla):
+  - Abre `evaluate_models.py` y localiza la lista `MODEL_FOLDERS`.
+  - Sustituye su contenido por los nombres de las carpetas de tus modelos, por ejemplo:
 
 ```python
-from evaluate_models import evaluate_model
-
-models = [
-    'training/models/mi_model1/keras_model.h5',
-    'training/models/mi_model2/keras_model.h5'
-]
-
-for path in models:
-    name = path.split('/')[-2].split('\\')[-1]
-    evaluate_model(path, name)
-
+MODEL_FOLDERS = ['mi_model']        # para un modelo
+MODEL_FOLDERS = ['mi_model1','mi_model2']  # para varios
 ```
 
-  - Guarda como `run_models.py` en la raíz del proyecto y ejecútalo:
+  - Ejecuta:
+
 ```bash
-python run_models.py
+python evaluate_models.py
 ```
 
-  - Opción 2 — Ejecutar desde la línea de comandos (ejemplo rápido):
-```bash
-python - <<'PY'
-from evaluate_models import evaluate_model
-for p in ['training/models/mi_model1/keras_model.h5','training/models/mi_model2/keras_model.h5']:
-    evaluate_model(p, p.split('/')[-2])
-PY
-```
-
-  - Opción 3 — Editar `MODEL_FOLDERS` temporalmente: reemplaza `MODEL_FOLDERS` por la lista de carpetas que quieras evaluar.
+Esta opción no requiere cambios adicionales en el código y es la forma más directa para evaluar modelos propios.
 
 Notas:
 - Si usas `run_models.py` o la invocación directa, no necesitas tocar `evaluate_models.py`.
