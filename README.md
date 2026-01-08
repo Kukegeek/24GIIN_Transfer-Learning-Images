@@ -53,6 +53,7 @@ python evaluate_models.py
 ## Notas
 - Asegúrate de que cada carpeta de modelo en `training/models/` contenga `keras_model.h5`.
 - Las imágenes de entrenamiento originales se guardan en `training/images/` para referencia y reproducibilidad.
+ - Las imágenes fueron seleccionadas manualmente de Internet y redimensionadas a 224x224px.
 
 ## Evalúa uno o varios modelos propios
 
@@ -147,6 +148,7 @@ python evaluate_models.py
 ## Notes
 - Make sure each model folder in `training/models/` contains a `keras_model.h5` file.
 - The original training images are kept in `training/images/` for reference and reproducibility.
+ - Images were manually selected from the internet and resized to 224x224px.
 
 ## Evaluate one or several custom models
 
