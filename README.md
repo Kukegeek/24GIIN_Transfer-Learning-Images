@@ -2,56 +2,53 @@
 
 Este proyecto utiliza modelos de Deep Learning (entrenados con Teachable Machine) para clasificar diferentes tipos de comida u objetos relacionados.
 
-## Estructura del Proyecto
+## Estructura del Proyecto (actualizada)
 
-*   **training_images/**: Contiene las imágenes originales utilizadas para el entrenamiento, organizadas en carpetas por categoría:
-    *   `01_soap`: Jabón (o productos similares)
-    *   `02_main`: Plato principal
-    *   `03_salad`: Ensalada
-    *   `04_dessert`: Postre
-    *   `05_nofood`: No comida
-*   **training/**: Contiene los modelos entrenados exportados desde Teachable Machine (archivos `.keras` o `.h5` y `labels.txt`). Se han generado varios modelos con diferentes cantidades de muestras para comparar su rendimiento.
-*   **test/**: Contiene imágenes para evaluar los modelos.
-*   **evaluate_models.py**: Script principal para evaluar el rendimiento de los modelos frente a las imágenes de prueba.
-*   **check_tf.py**: Script de utilidad para verificar la instalación de TensorFlow/Keras.
+- `training/images/`: Imágenes originales organizadas por categoría (estas son las imágenes que se usaron para entrenar los modelos).
+  - `training/images/01_soap`
+  - `training/images/02_main`
+  - `training/images/03_salad`
+  - `training/images/04_dessert`
+  - `training/images/05_nofood`
+- `training/models/`: Contiene las carpetas con los modelos exportados desde Teachable Machine. Cada subcarpeta incluye `keras_model.h5` y `labels.txt`.
+  - Ejemplo: `training/models/10_samples_1-10.keras/keras_model.h5`
+- `test/`: Imágenes para evaluación (nombres usados para inferir la etiqueta verdadera).
+- `evaluate_models.py`: Script para evaluar modelos frente a las imágenes en `test/`.
+- `check_tf.py`: Script de utilidad para verificar la instalación de TensorFlow/Keras.
 
-## Cómo reproducir el entrenamiento
+## Cómo reproducir el entrenamiento (Teachable Machine)
 
-Los modelos se han generado utilizando la herramienta online [Teachable Machine](https://teachablemachine.withgoogle.com/) de Google.
+1.  Accede a https://teachablemachine.withgoogle.com/ y crea un "Image Project".
+2.  Crea las clases y nómbralas: `soap`, `main`, `salad`, `dessert`, `nofood`.
+3.  Sube las imágenes desde `training/images/<carpeta_de_clase>` a la clase correspondiente.
+    - Por ejemplo, para `soap` sube las imágenes de `training/images/01_soap`.
+4.  Entrena el modelo en Teachable Machine.
+5.  Exporta el modelo (TensorFlow -> Keras) y coloca el contenido descomprimido en una carpeta dentro de `training/models/`.
+    - Ejemplo: `training/models/mi_modelo/keras_model.h5` y `training/models/mi_modelo/labels.txt`.
 
-1.  Accede a la web de Teachable Machine y crea un "Image Project".
-2.  Crea las clases (Class 1, Class 2, etc.) y nómbralas: `soap`, `main`, `salad`, `dessert`, `nofood`.
-3.  Sube las imágenes correspondientes desde la carpeta `training_images`.
-    *   Para la clase `soap`, usa las imágenes de `training_images/01_soap`.
-    *   Para la clase `main`, usa las imágenes de `training_images/02_main`.
-    *   Y así sucesivamente.
-4.  Entrena el modelo ("Train Model").
-5.  Exporta el modelo ("Export Model") seleccionando **TensorFlow** -> **Keras**.
-6.  Descarga el archivo zip, descomprímelo y coloca el archivo `keras_model.h5` en una nueva carpeta dentro de `training/` (por ejemplo `training/mi_nuevo_modelo/`).
+## Ejecución de la Evaluación (actualizado)
 
-## Ejecución de la Evaluación
-
-Para evaluar los modelos existentes contra las imágenes de test:
-
-1.  Asegúrate de tener instaladas las dependencias (TensorFlow, Pillow, NumPy).
-2.  Coloca tus imágenes de prueba en la carpeta `test/`.
-3.  **Importante**: Las imágenes de prueba deben tener un nombre que identifique su clase real para poder verificar si la predicción es correcta. El script soporta dos formatos:
-    *   **Prefijo por nombre**: `salad_mi_imagen.jpg`, `main_foto01.png`...
-    *   **Prefijo numérico**: 
-        *   `01` -> soap
-        *   `02` -> main
-        *   `03` -> salad
-        *   `04` -> dessert
-        *   `05` -> nofood
-        *   Ejemplo: `03_mi_ensalada.jpg` será tratada como `salad`.
-4.  Ejecuta el script:
-    ```bash
-    python evaluate_models.py
-    ```
-5.  El script recorrerá todos los modelos definidos en la lista `MODEL_FOLDERS` y mostrará la precisión global y por categoría para cada uno.
+1.  Instala dependencias si es necesario:
+```bash
+pip install tensorflow pillow numpy
+```
+2.  Coloca las imágenes de prueba en `test/`.
+3.  Nombres de archivo aceptados (para que el script determine la etiqueta verdadera):
+   - Prefijo por nombre: `salad_01.jpg`, `main_02.png`, etc.
+   - Prefijo numérico: `01_...` -> `soap`, `02_...` -> `main`, `03_...` -> `salad`, `04_...` -> `dessert`, `05_...` -> `nofood`.
+     - Ejemplo: `03_mi_ensalada.jpg` será interpretado como `salad`.
+4.  Ejecuta la evaluación:
+```bash
+python evaluate_models.py
+```
+5.  `evaluate_models.py` leerá las carpetas listadas en la variable `MODEL_FOLDERS` dentro de `training/models/` y generará métricas por modelo.
 
 ## Requisitos
-*   Python 3.x
-*   tensorflow / tf-keras
-*   pillow
-*   numpy
+- Python 3.x
+- tensorflow / tf-keras
+- pillow
+- numpy
+
+## Notas
+- Asegúrate de que cada carpeta de modelo en `training/models/` contenga `keras_model.h5`.
+- Las imágenes de entrenamiento originales se guardan en `training/images/` para referencia y reproducibilidad.
