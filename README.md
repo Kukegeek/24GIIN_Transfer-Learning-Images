@@ -27,7 +27,7 @@ Este proyecto utiliza modelos de Deep Learning (entrenados con Teachable Machine
 5.  Exporta el modelo (TensorFlow -> Keras) y coloca el contenido descomprimido en una carpeta dentro de `training/models/`.
     - Ejemplo: `training/models/mi_modelo/keras_model.h5` y `training/models/mi_modelo/labels.txt`.
 
-## Ejecución de la Evaluación (actualizado)
+## Ejecución de la Evaluación
 
 1.  Instala dependencias si es necesario:
 ```bash
@@ -54,33 +54,17 @@ python evaluate_models.py
 - Asegúrate de que cada carpeta de modelo en `training/models/` contenga `keras_model.h5`.
 - Las imágenes de entrenamiento originales se guardan en `training/images/` para referencia y reproducibilidad.
 
-## Evaluar un solo modelo (tu modelo)
+## Evalúa uno o varios modelos propios
 
-Si quieres evaluar únicamente tu modelo (en lugar de los modelos incluidos), tienes estas opciones:
-1) Opción A — Rápido, sin cambios de código
+Si quieres evaluar modelos propios, hazlo desde una única sección: puedes evaluar uno o varios modelos siguiendo estos pasos.
 
-- Crea una carpeta para tu modelo en `training/models/`, por ejemplo `training/models/mi_model/`.
-- Coloca `keras_model.h5` y `labels.txt` dentro de esa carpeta.
-- Edita la lista `MODEL_FOLDERS` en `evaluate_models.py` y reemplaza su contenido por:
+- Opción 1 — Reemplazar el contenido de las carpetas existentes (recomendado):
+  - Sustituye los archivos dentro de `training/models/model01`, `model02`, `model03`, `model04`, `model05` por los de tus modelos. Cada carpeta debe contener:
+    - `keras_model.h5`
+    - `labels.txt` (lista de etiquetas, una por línea, en el orden de salida del modelo)
 
-```python
-MODEL_FOLDERS = ['mi_model']
-```
-
-- Ejecuta:
-
-```bash
-python evaluate_models.py
-```
-
-Usando esta opción solo se evaluará el modelo que indiques en `MODEL_FOLDERS`.
-
-## Evaluar uno o varios modelos propios
-
-Si quieres usar tus propios modelos, puedes simplemente reemplazar el contenido de las carpetas existentes `model01`, `model02`, `model03`, `model04`, `model05` dentro de `training/models/` con tus propios archivos. Cada carpeta debe contener los archivos:
-
-- `keras_model.h5`
-- `labels.txt` (lista de etiquetas, una por línea, en el orden de salida del modelo)
+- Opción 2 — Añadir una carpeta nueva y apuntar solo a ella:
+  - Crea `training/models/mi_model/` y coloca `keras_model.h5` y `labels.txt` dentro.
 
 Después, indica qué carpetas evaluar editando la lista `MODEL_FOLDERS` en `evaluate_models.py`. Ejemplos:
 
@@ -90,6 +74,9 @@ MODEL_FOLDERS = ['model01']
 
 # Evaluar varios modelos (model02 y model05)
 MODEL_FOLDERS = ['model02', 'model05']
+
+# Evaluar una carpeta nueva llamada mi_model
+MODEL_FOLDERS = ['mi_model']
 ```
 
 Finalmente ejecuta:
@@ -98,7 +85,7 @@ Finalmente ejecuta:
 python evaluate_models.py
 ```
 
-De esta forma no necesitas crear nuevas carpetas: solo sustituye los archivos dentro de `model01..model05` por los de tu modelo y actualiza `MODEL_FOLDERS`.
+Con esto puedes evaluar uno o varios modelos desde la misma sección sin duplicar instrucciones.
 
 ---
 
