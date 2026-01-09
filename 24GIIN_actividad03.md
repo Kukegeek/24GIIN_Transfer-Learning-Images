@@ -2,7 +2,6 @@
 # Análisis de Robustez y Convergencia Semántica en la Clasificación de Alimentos
 
 **Autor:** Jesús Navarro Cuquejo  
-**Laboratorio:** Laboratorio de Visión Computacional e Inteligencia Artificial  
 **Universidad:** Universidad Internacional de Valencia  
 **Lugar/Fecha:** Murcia, enero de 2026
 
